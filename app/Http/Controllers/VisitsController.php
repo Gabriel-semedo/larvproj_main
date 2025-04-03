@@ -11,13 +11,14 @@ class VisitsController extends Controller
     public function index()
     {
         $visits = Visit::all(); // Obtém todas as visits
+
         return view('visits.index', ['visits' => $visits]); // Passando diretamente sem compact
     }
 
     // Exibe o formulário para criar uma nova visit
     public function create()
     {
-        return view('visits.create');
+        return view('visits.form');
     }
 
     // Salva a nova visit no banco de dados
@@ -37,7 +38,7 @@ class VisitsController extends Controller
 
     public function edit(Visit $visit)
     {
-        return view('visits.edit', ['visit' => $visit]); // Passando o objeto Visits diretamente
+        return view('visits.form', ['visit' => $visit]); // Passando o objeto Visits diretamente
     }
 
 
