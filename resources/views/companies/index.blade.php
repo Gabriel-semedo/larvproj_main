@@ -2,7 +2,10 @@
 
 @section('content')
     <div class="container">
-        <h1>Lista de Empresas</h1>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Lista de empresas</h1>
+            <a href="{{ url('/') }}" class="btn btn-secondary">Voltar à Página Principal</a>
+        </div>
 
         <!-- Botão para criar uma nova empresa -->
         <a href="{{ route('companies.create') }}" class="btn btn-primary mb-3">Nova Empresa</a>
