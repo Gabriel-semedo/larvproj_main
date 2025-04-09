@@ -17,11 +17,11 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  */
 
-class User extends Model
+class Visit extends Model
 {
     use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'visits';
 
     // Definir a chave primária
     protected $primaryKey = 'id';
@@ -32,16 +32,22 @@ class User extends Model
 
     protected $fillable = [
         'name',
-        
+        'plate',
+        'company',
+        'user',
+        'entry',
+        'exit',
     ];
-    /**
-     * Relationship of a company with visits.
-     * A company can have multiple visits recorded.
-     */
-    public function visits()
+
+
+    public function company()
     {
-        return $this->hasMany(Visit::class, 'company', 'id');
+        return $this->belongsTo(Company::class, 'company', 'id');
     }
 
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user', 'id');
+    }
 }

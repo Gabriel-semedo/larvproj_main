@@ -6,34 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
- * @property int $id
+ * @property int $e_id
  * @property string $name
- * @property string $plate
- * @property integer $company
- * @property integer $user
- * @property string $entry
- * @property string|null $exit
  * @package App\Models
  */
-
-class User extends Model
+class Company extends Model
 {
     use HasFactory;
 
-    protected $table = 'users';
-
-    // Definir a chave primária
+    // Defining the table name in the database
+    protected $table = 'companies';
+    // Define the primary key
     protected $primaryKey = 'id';
 
-    // Ativar timestamps (created_at, updated_at)
+    // Enable timestamps (created_at, updated_at) unless disabled
     public $timestamps = false;
 
-
+    // Define the fields that can be mass-assigned
     protected $fillable = [
-        'name',
-        
+        'name',  // company name
     ];
+
     /**
      * Relationship of a company with visits.
      * A company can have multiple visits recorded.
@@ -42,6 +35,4 @@ class User extends Model
     {
         return $this->hasMany(Visit::class, 'company', 'id');
     }
-
-
 }
