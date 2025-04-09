@@ -14,6 +14,12 @@
         <a href="{{ route('visits.index') }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
             Ver Visitas
         </a>
+        <a href="{{ route('companies.index') }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
+            Ver Empresas
+        </a>
+        <a href="{{ route('users.index') }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
+            Ver Utilizadores
+        </a>
     </div>
 </body>
 </html>

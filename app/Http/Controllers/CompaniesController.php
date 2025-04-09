@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
+use App\Models\Company; 
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
 {
-    // Displays the list of companies
+    
     public function index()
     {
-        $companies = Company::all(); // Gets all companies
+        $companies = Company::all(); 
         return view('companies.index', ['companies' => $companies]);
     }
 
-    // Displays the form to create a new company
+    
     public function create()
     {
-        return view('companies.create');
+        return view('companies.form'); 
     }
 
-    // Saves the new company to the database
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -32,13 +32,13 @@ class CompaniesController extends Controller
         return redirect()->route('companies.index');
     }
 
-    // Displays the edit form
+    
     public function edit(Company $company)
     {
-        return view('companies.edit', ['company' => $company]);
+        return view('companies.form', ['company' => $company]); 
     }
 
-    // Updates the company in the database
+    
     public function update(Request $request, Company $company)
     {
         $request->validate([
@@ -50,7 +50,7 @@ class CompaniesController extends Controller
         return redirect()->route('companies.index');
     }
 
-    // Deletes the company from the database
+    
     public function destroy(Company $company)
     {
         $company->delete();

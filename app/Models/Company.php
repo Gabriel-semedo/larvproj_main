@@ -20,7 +20,7 @@ class Company extends Model
     protected $primaryKey = 'id';
 
     // Enable timestamps (created_at, updated_at) unless disabled
-    public $timestamps = true;
+    public $timestamps = false;
 
     // Define the fields that can be mass-assigned
     protected $fillable = [

@@ -19,7 +19,7 @@ class CreateVisitsTable extends Migration
             $table->string('plate'); 
             $table->unsignedBigInteger('company'); 
             $table->unsignedBigInteger('user'); 
-            $table->timestamp('entry'); 
+            $table->timestamp('entry')->useCurrent(); 
             $table->dateTime('exit')->nullable(); 
             
 

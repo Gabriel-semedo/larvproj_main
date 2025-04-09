@@ -4,62 +4,82 @@ namespace App\Http\Controllers;
 
 use App\Models\Visit;
 use Illuminate\Http\Request;
+use App\Models\Company;
+use App\Models\User;
 
 class VisitsController extends Controller
 {
-    // Exibe a lista de visits
     public function index()
     {
-        $visits = Visit::all(); // Obtém todas as visits
+        $visits = Visit::all();
 
-        return view('visits.index', ['visits' => $visits]); // Passando diretamente sem compact
+        foreach ($visits as $visit) {
+            $visit->company_name = Company::find($visit->company)?->name;
+            $visit->user_name = User::find($visit->user)?->name;
+        }
+
+        return view('visits.index', ['visits' => $visits]);
     }
 
-    // Exibe o formulário para criar uma nova visit
     public function create()
     {
         return view('visits.form');
     }
 
-    // Salva a nova visit no banco de dados
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'plate' => 'required|string|unique:visits,plate',
-            'company' => 'required|exists:company,id',
+            'plate' => 'required|string',
+            'company' => 'required|exists:companies,id',
             'user' => 'required|exists:users,id',
         ]);
 
-        Visit::create($request->all());
+        $lisbonTime = new \DateTime('now', new \DateTimeZone('Europe/Lisbon'));
+
+        Visit::create([
+            'name' => $request->name,
+            'plate' => $request->plate,
+            'company' => $request->company,
+            'user' => $request->user,
+            'entry' => $lisbonTime->format('Y-m-d H:i:s'),
+        ]);
 
         return redirect()->route('visits.index');
     }
 
     public function edit(Visit $visit)
     {
-        return view('visits.form', ['visit' => $visit]); // Passando o objeto Visits diretamente
+        return view('visits.form', ['visit' => $visit]);
     }
-
 
     public function update(Request $request, Visit $visit)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'plate' => 'required|string|unique:visits,plate,' . $visit->id,
-            'company' => 'required|exists:company,id',
+            'plate' => 'required|string',
+            'company' => 'required|exists:companies,id',
             'user' => 'required|exists:users,id',
         ]);
 
-        $visit->update($request->all());
+        $visit->update($request->only(['name', 'plate', 'company', 'user']));
 
         return redirect()->route('visits.index');
     }
 
-
     public function destroy(Visit $visit)
     {
         $visit->delete();
+
+        return redirect()->route('visits.index');
+    }
+
+    public function markAsExited(Visit $visit)
+    {
+        $lisbonTime = new \DateTime('now', new \DateTimeZone('Europe/Lisbon'));
+
+        $visit->exit = $lisbonTime->format('Y-m-d H:i:s');
+        $visit->save();
 
         return redirect()->route('visits.index');
     }
