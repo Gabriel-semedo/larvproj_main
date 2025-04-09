@@ -31,7 +31,19 @@ class VisitsController extends Controller
             'user' => 'required|exists:users,id',
         ]);
 
-        Visit::create($request->all());
+        // Verificar se a placa já existe
+        $existingVisit = Visit::where('plate', $request->plate)->first();
+        if ($existingVisit) {
+            return redirect()->back()->withErrors(['plate' => 'Esta placa já está em uso.']);
+        }
+
+        try {
+            Visit::create($request->all());
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == '23000') { // Código de violação de restrição única
+                return redirect()->back()->withErrors(['plate' => 'Esta placa já está em uso.']);
+            }
+        }
 
         return redirect()->route('visits.index');
     }
@@ -40,7 +52,6 @@ class VisitsController extends Controller
     {
         return view('visits.form', ['visit' => $visit]); // Passando o objeto Visits diretamente
     }
-
 
     public function update(Request $request, Visit $visit)
     {
@@ -55,7 +66,6 @@ class VisitsController extends Controller
 
         return redirect()->route('visits.index');
     }
-
 
     public function destroy(Visit $visit)
     {

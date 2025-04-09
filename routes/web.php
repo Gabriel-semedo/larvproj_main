@@ -1,12 +1,11 @@
 <?php
 
-
-use App\Http\Controllers\VisitsController;
+use App\Http\Controllers\CompaniesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::resource('/visits', VisitsController::class);
-
+// Rotas para CompaniesController
+Route::resource('companies', CompaniesController::class);

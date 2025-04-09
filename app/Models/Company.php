@@ -30,7 +30,7 @@ class Company extends Model
     /**
      * Relationship of a company with visits.
      * A company can have multiple visits recorded.
-     */
+     */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
     public function visits()
     {
         return $this->hasMany(Visit::class, 'company', 'id');
