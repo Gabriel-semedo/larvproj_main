@@ -12,43 +12,18 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nome</th>
                     <th>Matrícula</th>
-                    <th>Empresa</th>
-                    <th>Utilizador</th>
-                    <th>Entrada</th>
-                    <th>Saída</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($visits as $visit)
                     <tr>
-                        <td>{{ $visit->id }}</td>
                         <td>{{ $visit->name }}</td>
                         <td>{{ $visit->plate }}</td>
-                        <td>{{ $visit->company_name ?? '---' }}</td>
-                        <td>{{ $visit->user_name ?? '---' }}</td>
-                        <td>{{ date('d/m/Y H:i:s', strtotime($visit->entry)) }}</td>
                         <td>
-                            {{ $visit->exit ? date('d/m/Y H:i:s', strtotime($visit->exit)) : '---' }}
-                        </td>
-                        <td>
-                            <a href="{{ route('visits.edit', $visit->id) }}" class="btn btn-sm btn-warning">Editar</a>
-                            <form action="{{ route('visits.destroy', $visit->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Eliminar esta visita?')">Eliminar</button>
-                            </form>
-
-                            @if (!$visit->exit)
-                                <form action="{{ route('visits.markAsExited', $visit->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-sm btn-success">Marcar como saída</button>
-                                </form>
-                            @endif
+                            <a href="{{ route('visits.show', $visit->id) }}" class="btn btn-sm btn-info">Ver</a>
                         </td>
                     </tr>
                 @endforeach

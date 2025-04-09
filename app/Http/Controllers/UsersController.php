@@ -7,20 +7,17 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    
     public function index()
     {
         $users = User::all(); 
         return view('users.index', ['users' => $users]);
     }
 
-   
     public function create()
     {
         return view('users.form'); 
     }
 
-    
     public function store(Request $request)
     {
         $request->validate([
@@ -32,13 +29,11 @@ class UsersController extends Controller
         return redirect()->route('users.index');
     }
 
-    
-    public function edit(User $users)
+    public function edit(User $user)
     {
         return view('users.form', ['user' => $user]); 
     }
 
-    
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -47,10 +42,9 @@ class UsersController extends Controller
 
         $user->update($request->all());
 
-        return redirect()->route('user.index');
+        return redirect()->route('users.index');
     }
 
-    
     public function destroy(User $user)
     {
         $user->delete();

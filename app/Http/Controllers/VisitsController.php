@@ -83,4 +83,10 @@ class VisitsController extends Controller
 
         return redirect()->route('visits.index');
     }
+    public function show(Visit $visit)
+    {
+        $visit->company_name = Company::find($visit->company)?->name;
+        $visit->user_name = User::find($visit->user)?->name;
+        return view('visits.show', ['visit' => $visit]);
+    }
 }
