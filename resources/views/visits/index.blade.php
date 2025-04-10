@@ -23,7 +23,7 @@
                         <td>{{ $visit->name }}</td>
                         <td>{{ $visit->plate }}</td>
                         <td>
-                            <a href="{{ route('visits.show', $visit->id) }}" class="btn btn-sm btn-info">Ver</a>
+                            <a href="{{ route('visits.show', $visit->id) }}" class="btn btn-sm btn-info">Ver Detalhes</a>
                         </td>
                     </tr>
                 @endforeach
