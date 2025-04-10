@@ -23,8 +23,8 @@
             <div class="mb-3">
                 <label for="company" class="form-label">Empresa</label>
                 <select name="company" class="form-control" required>
-                    @foreach(\App\Models\Company::all() as $company)
-                        <option value="{{ $company->id }}" {{ old('company', $visit->company ?? '') == $company->id ? 'selected' : '' }}>
+                    @foreach($companies as $company)
+                <option value="{{ $company->id }}" {{ old('company', $visit->company ?? '') == $company->id ? 'selected' : '' }}>
                             {{ $company->name }}
                         </option>
                     @endforeach
@@ -34,7 +34,7 @@
             <div class="mb-3">
                 <label for="user" class="form-label">Utilizador</label>
                 <select name="user" class="form-control" required>
-                    @foreach(\App\Models\User::all() as $user)
+                    @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ old('user', $visit->user ?? '') == $user->id ? 'selected' : '' }}>
                             {{ $user->name }}
                         </option>

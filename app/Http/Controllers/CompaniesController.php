@@ -35,7 +35,11 @@ class CompaniesController extends Controller
     
     public function edit(Company $company)
     {
-        return view('companies.form', ['company' => $company]); 
+        $company = Company::all();
+        return view('visits.form', [
+            'companies' => Company::all(),
+        ]);
+
     }
 
     
@@ -60,6 +64,6 @@ class CompaniesController extends Controller
     public function show($id)
     {
         $company = Company::findOrFail($id);
-        return view('companies.show', ['company' => $company]);
+        return view('companies.show', ['companies' => $company]);
     }
 }

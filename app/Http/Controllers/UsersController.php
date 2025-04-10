@@ -9,8 +9,8 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::all(); 
-        return view('users.index', ['users' => $users]);
+        $user = User::all(); 
+        return view('users.index', ['users' => $user]);
     }
 
     public function create()
@@ -31,7 +31,7 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.form', ['user' => $user]); 
+        return view('users.form', ['users' => $user]); 
     }
 
     public function update(Request $request, User $user)
@@ -54,6 +54,6 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return view('users.show', ['user' => $user]);
+        return view('users.show', ['users' => $user]);
     }
 }
