@@ -7,12 +7,13 @@
             <a href="{{ url('/') }}" class="btn btn-secondary">Voltar à Página Principal</a>
         </div>
 
+        <!-- Botão para criar uma nova empresa -->
         <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Novo Utilizador</a>
 
+        <!-- Tabela para exibir as empresas -->
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nome</th>
                     <th>Ações</th>
                 </tr>
@@ -20,15 +21,10 @@
             <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Editar</a>
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Eliminar este utilizador?')">Eliminar</button>
-                            </form>
+                            <!-- Ver Detalhes -->
+                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-info">Ver Detalhes</a>
                         </td>
                     </tr>
                 @endforeach

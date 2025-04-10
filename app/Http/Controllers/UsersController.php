@@ -51,4 +51,9 @@ class UsersController extends Controller
 
         return redirect()->route('users.index');
     }
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return view('users.show', ['user' => $user]);
+    }
 }

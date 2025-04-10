@@ -13,4 +13,6 @@ Route::resource('/visits', VisitsController::class);
 Route::patch('/visits/{visit}/exit', [VisitsController::class, 'markAsExited'])->name('visits.markAsExited');
 Route::get('/visits/{visit}', [VisitsController::class, 'show'])->name('visits.show');
 Route::resource('/companies', CompaniesController::class);
+Route::resource('companies', CompaniesController::class);
 Route::resource('/users', UsersController::class);
+Route::resource('users', UsersController::class);

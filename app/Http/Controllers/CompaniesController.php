@@ -57,4 +57,9 @@ class CompaniesController extends Controller
 
         return redirect()->route('companies.index');
     }
+    public function show($id)
+    {
+        $company = Company::findOrFail($id);
+        return view('companies.show', ['company' => $company]);
+    }
 }
