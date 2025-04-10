@@ -31,7 +31,10 @@ class VisitsController extends Controller
 
     public function create()
     {
-        return view('visits.form');
+        return view('visits.form', [
+            'companies' => Company::all(),
+            'users' => User::all(),
+        ]);
     }
 
     public function store(Request $request)
@@ -58,7 +61,11 @@ class VisitsController extends Controller
 
     public function edit(Visit $visit)
     {
-        return view('visits.form', ['visit' => $visit]);
+        return view('visits.form', [
+            'visit' => $visit,
+            'companies' => Company::all(),
+            'users' => User::all(),
+        ]); 
     }
 
     public function update(Request $request, Visit $visit)
