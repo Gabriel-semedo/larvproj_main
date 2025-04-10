@@ -7,6 +7,14 @@
             <a href="{{ url('/') }}" class="btn btn-secondary">Voltar à Página Principal</a>
         </div>
 
+        <!-- Barra de Pesquisa para Visitas -->
+        <form method="GET" action="{{ route('visits.index') }}" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Pesquisar visitas por nome ou matrícula" value="{{ request()->input('search') }}">
+                <button class="btn btn-primary" type="submit">Pesquisar</button>
+            </div>
+        </form>
+
         <a href="{{ route('visits.create') }}" class="btn btn-primary mb-3">Nova Visita</a>
 
         <table class="table table-striped">

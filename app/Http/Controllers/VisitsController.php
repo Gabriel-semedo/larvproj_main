@@ -9,15 +9,23 @@ use App\Models\User;
 
 class VisitsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $visits = Visit::all();
+        $search = $request->input('search');  // Captura o valor da pesquisa
 
-        foreach ($visits as $visit) {
-            $visit->company_name = Company::find($visit->company)?->name;
-            $visit->user_name = User::find($visit->user)?->name;
+        // Criar a consulta de visitas
+        $visits = Visit::query();
+
+        if ($search) {
+            // Filtra pelas colunas 'name' (nome) ou 'plate' (matrícula)
+            $visits = $visits->where('name', 'like', '%' . $search . '%')
+                             ->orWhere('plate', 'like', '%' . $search . '%');
         }
 
+        // Recupera as visitas filtradas
+        $visits = $visits->get();
+
+        // Retorna a view com as visitas filtradas
         return view('visits.index', ['visits' => $visits]);
     }
 
@@ -83,6 +91,7 @@ class VisitsController extends Controller
 
         return redirect()->route('visits.index');
     }
+
     public function show(Visit $visit)
     {
         $visit->company_name = Company::find($visit->company)?->name;

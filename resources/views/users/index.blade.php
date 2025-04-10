@@ -7,10 +7,16 @@
             <a href="{{ url('/') }}" class="btn btn-secondary">Voltar à Página Principal</a>
         </div>
 
-        <!-- Botão para criar uma nova empresa -->
+        <!-- Barra de Pesquisa para Utilizadores -->
+        <form method="GET" action="{{ route('users.index') }}" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Pesquisar utilizadores por nome" value="{{ request()->input('search') }}">
+                <button class="btn btn-primary" type="submit">Pesquisar</button>
+            </div>
+        </form>
+
         <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Novo Utilizador</a>
 
-        <!-- Tabela para exibir as empresas -->
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -23,7 +29,6 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>
-                            <!-- Ver Detalhes -->
                             <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-info">Ver Detalhes</a>
                         </td>
                     </tr>
