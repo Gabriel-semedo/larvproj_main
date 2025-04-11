@@ -3,6 +3,7 @@
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\VisitsController;
+use App\Http\Controllers\OcrController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,3 +17,4 @@ Route::resource('/companies', CompaniesController::class);
 Route::resource('companies', CompaniesController::class);
 Route::resource('/users', UsersController::class);
 Route::resource('users', UsersController::class);
+Route::post('/ocr-matricula', [OcrController::class, 'lerMatricula'])->name('ocr.matricula');
