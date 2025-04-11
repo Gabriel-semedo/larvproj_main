@@ -5,6 +5,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1>Lista de Empresas</h1>
             <a href="{{ url('/') }}" class="btn btn-secondary">Voltar à Página Principal</a>
+            
         </div>
 
         <!-- Barra de Pesquisa para Empresas -->

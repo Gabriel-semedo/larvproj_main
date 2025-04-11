@@ -10,24 +10,36 @@ use App\Models\User;
 class VisitsController extends Controller
 {
     public function index(Request $request)
-    {
-        $search = $request->input('search');  // Captura o valor da pesquisa
+{
+    $search = $request->input('search');  // Captura o valor da pesquisa
+    $year = $request->input('year');  // Captura o ano digitado
+    $month = $request->input('month');  // Captura o mês selecionado
 
-        // Criar a consulta de visitas
-        $visits = Visit::query();
+    // Criar a consulta de visitas
+    $visits = Visit::query();
 
-        if ($search) {
-            // Filtra pelas colunas 'name' (nome) ou 'plate' (matrícula)
-            $visits = $visits->where('name', 'like', '%' . $search . '%')
-                             ->orWhere('plate', 'like', '%' . $search . '%');
-        }
-
-        // Recupera as visitas filtradas
-        $visits = $visits->get();
-
-        // Retorna a view com as visitas filtradas
-        return view('visits.index', ['visits' => $visits]);
+    // Filtro de pesquisa por nome ou matrícula
+    if ($search) {
+        $visits = $visits->where('name', 'like', '%' . $search . '%')
+                         ->orWhere('plate', 'like', '%' . $search . '%');
     }
+
+    // Filtro por ano (se o ano for informado)
+    if ($year) {
+        $visits = $visits->whereYear('entry', $year);
+    }
+
+    // Filtro por mês (se o mês for informado)
+    if ($month) {
+        $visits = $visits->whereMonth('entry', $month);
+    }
+
+    // Recupera as visitas filtradas
+    $visits = $visits->get();
+
+    // Retorna a view com as visitas filtradas
+    return view('visits.index', ['visits' => $visits]);
+}
 
     public function create()
     {
@@ -65,7 +77,7 @@ class VisitsController extends Controller
             'visit' => $visit,
             'companies' => Company::all(),
             'users' => User::all(),
-        ]); 
+        ]);
     }
 
     public function update(Request $request, Visit $visit)
