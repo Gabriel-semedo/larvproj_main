@@ -21,10 +21,6 @@ class OcrController extends Controller
         $filename = storage_path('app/temp_ocr.jpg');
         file_put_contents($filename, $image);
 
-        $tempBW = storage_path('app/temp_ocr_bw.jpg');
-        exec("convert $filename -colorspace Gray -threshold 50% $tempBW");
-        exec("tesseract $tempBW stdout", $output, $returnVar);
-
         // Aqui deverias usar uma biblioteca OCR (tipo Tesseract via Shell ou um pacote PHP)
         // Exemplo com tesseract instalado:
         $output = null;
@@ -35,13 +31,11 @@ class OcrController extends Controller
             return response()->json(['error' => 'Erro no OCR'], 500);
         }
 
-        $text = trim(implode(" ", $output));
+        $text = implode(" ", $output);
 
-        if (!$text) {
-            return response()->json(['error' => 'Texto não lido'], 500);
-        }
-        
-        return response()->json(data: ['text' => $text]);
-        
+        return response()->json(['text' => trim($text)]);
     }
 }
+
+
+

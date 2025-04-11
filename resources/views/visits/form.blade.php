@@ -42,6 +42,7 @@
     </select>
 </div>
 
+
             <!-- Botão para tirar a foto -->
             <button type="button" id="captureBtn" class="btn btn-primary">Tirar Foto</button>
 
@@ -128,3 +129,5 @@
     </script>
 
 @endsection
+
+
