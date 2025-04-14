@@ -9,17 +9,37 @@ use App\Models\User;
 
 class VisitsController extends Controller
 {
-    public function index()
-    {
-        $visits = Visit::all();
+    public function index(Request $request)
+{
+    $search = $request->input('search');  // Captura o valor da pesquisa
+    $year = $request->input('year');  // Captura o ano digitado
+    $month = $request->input('month');  // Captura o mês selecionado
 
-        foreach ($visits as $visit) {
-            $visit->company_name = Company::find($visit->company)?->name;
-            $visit->user_name = User::find($visit->user)?->name;
-        }
+    
+    $visits = Visit::query();
 
-        return view('visits.index', ['visits' => $visits]);
+    
+    if ($search) {
+        $visits = $visits->where('name', 'like', '%' . $search . '%')
+                         ->orWhere('plate', 'like', '%' . $search . '%');
     }
+
+    
+    if ($year) {
+        $visits = $visits->whereYear('entry', $year);
+    }
+
+    
+    if ($month) {
+        $visits = $visits->whereMonth('entry', $month);
+    }
+
+    
+    $visits = $visits->get();
+
+    
+    return view('visits.index', ['visits' => $visits]);
+}
 
     public function create()
     {
@@ -57,7 +77,7 @@ class VisitsController extends Controller
             'visit' => $visit,
             'companies' => Company::all(),
             'users' => User::all(),
-        ]); 
+        ]);
     }
 
     public function update(Request $request, Visit $visit)
@@ -90,6 +110,7 @@ class VisitsController extends Controller
 
         return redirect()->route('visits.index');
     }
+
     public function show(Visit $visit)
     {
         $visit->company_name = Company::find($visit->company)?->name;

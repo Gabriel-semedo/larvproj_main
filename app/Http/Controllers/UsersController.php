@@ -7,15 +7,28 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::all(); 
-        return view('users.index', ['users' => $user]);
+        $search = $request->input('search');  // Captura o valor da pesquisa
+
+        // Criar a consulta de utilizadores
+        $users = User::query();
+
+        if ($search) {
+            // Filtra pela coluna 'name' (nome)
+            $users = $users->where('name', 'like', '%' . $search . '%');
+        }
+
+        // Recupera os utilizadores filtrados
+        $users = $users->get();
+
+        // Retorna a view com os utilizadores filtrados
+        return view('users.index', ['users' => $users]);
     }
 
     public function create()
     {
-        return view('users.form'); 
+        return view('users.form');
     }
 
     public function store(Request $request)
@@ -31,7 +44,7 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.form', ['users' => $user]); 
+        return view('users.form', ['user' => $user]);
     }
 
     public function update(Request $request, User $user)
@@ -51,6 +64,7 @@ class UsersController extends Controller
 
         return redirect()->route('users.index');
     }
+
     public function show($id)
     {
         $user = User::findOrFail($id);
