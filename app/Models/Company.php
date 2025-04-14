@@ -24,7 +24,10 @@ class Company extends Model
 
     // Define the fields that can be mass-assigned
     protected $fillable = [
-        'name',  // company name
+        'name',
+        'email',
+        'address',
+        'is_present',
     ];
 
     /**

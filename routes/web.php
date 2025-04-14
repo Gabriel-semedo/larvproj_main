@@ -16,3 +16,9 @@ Route::resource('/companies', CompaniesController::class);
 Route::resource('companies', CompaniesController::class);
 Route::resource('/users', UsersController::class);
 Route::resource('users', UsersController::class);
+Route::get('/empresas/presentes', [CompaniesController::class, 'presentes']);
+Route::get('/empresas/ausentes', [CompaniesController::class, 'ausentes']);
+Route::patch('/empresas/{id}/presenca', [CompaniesController::class, 'atualizarPresenca']);
+
+
+
