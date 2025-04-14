@@ -15,29 +15,29 @@ class VisitsController extends Controller
     $year = $request->input('year');  // Captura o ano digitado
     $month = $request->input('month');  // Captura o mês selecionado
 
-    // Criar a consulta de visitas
+    
     $visits = Visit::query();
 
-    // Filtro de pesquisa por nome ou matrícula
+    
     if ($search) {
         $visits = $visits->where('name', 'like', '%' . $search . '%')
                          ->orWhere('plate', 'like', '%' . $search . '%');
     }
 
-    // Filtro por ano (se o ano for informado)
+    
     if ($year) {
         $visits = $visits->whereYear('entry', $year);
     }
 
-    // Filtro por mês (se o mês for informado)
+    
     if ($month) {
         $visits = $visits->whereMonth('entry', $month);
     }
 
-    // Recupera as visitas filtradas
+    
     $visits = $visits->get();
 
-    // Retorna a view com as visitas filtradas
+    
     return view('visits.index', ['visits' => $visits]);
 }
 
