@@ -70,4 +70,39 @@ class CompaniesController extends Controller
         $company = Company::findOrFail($id);
         return view('companies.show', ['companies' => $company]);
     }
+    // Mostrar empresas presentes
+    public function marcarPresenca($id)
+    {
+        $company = Company::findOrFail($id);
+        $company->is_present = !$company->is_present;
+        $company->save();
+    
+        return response()->json([
+            'success' => true,
+            'is_present' => $company->is_present,
+        ]);
+    }
+    
+// Mostrar empresas ausentes
+public function ausentes()
+{
+    $ausentes = Company::where('is_present', false)->get();
+    return response()->json($ausentes);
+}
+
+// Atualizar status de presença (ativa/desativa)
+public function atualizarPresenca($id)
+{
+    $empresa = Company::findOrFail($id);
+    $empresa->is_present = !$empresa->is_present;
+    $empresa->save();
+
+    \Log::info('Presença atualizada para a empresa: ' . $empresa->name);
+
+    return response()->json([
+        'success' => true,
+        'is_present' => $empresa->is_present,
+    ]);
+}
+
 }
