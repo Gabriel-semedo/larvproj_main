@@ -3,43 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visit;
-use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class VisitsController extends Controller
 {
     public function index(Request $request)
-{
-    $search = $request->input('search');  // Captura o valor da pesquisa
-    $year = $request->input('year');  // Captura o ano digitado
-    $month = $request->input('month');  // Captura o mês selecionado
+    {
+        $search = $request->input('search');
+        $year = $request->input('year');
+        $month = $request->input('month');
 
-    
-    $visits = Visit::query();
+        $visits = Visit::query();
 
-    
-    if ($search) {
-        $visits = $visits->where('name', 'like', '%' . $search . '%')
-                         ->orWhere('plate', 'like', '%' . $search . '%');
+        if ($search) {
+            $visits = $visits->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                      ->orWhere('plate', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($year) {
+            $visits = $visits->whereYear('entry', $year);
+        }
+
+        if ($month) {
+            $visits = $visits->whereMonth('entry', $month);
+        }
+
+        $visits = $visits->get();
+
+        return view('visits.index', ['visits' => $visits]);
     }
-
-    
-    if ($year) {
-        $visits = $visits->whereYear('entry', $year);
-    }
-
-    
-    if ($month) {
-        $visits = $visits->whereMonth('entry', $month);
-    }
-
-    
-    $visits = $visits->get();
-
-    
-    return view('visits.index', ['visits' => $visits]);
-}
 
     public function create()
     {
@@ -115,6 +111,40 @@ class VisitsController extends Controller
     {
         $visit->company_name = Company::find($visit->company)?->name;
         $visit->user_name = User::find($visit->user)?->name;
+
         return view('visits.show', ['visit' => $visit]);
+    }
+
+    // Visitas ainda presentes (sem hora de saída)
+    public function attendcent()
+    {
+        $attendcent = Visit::whereNull('exit')->get();
+        return view('visits.index', ['visits' => $attendcent]);
+    }
+
+    // Visitas ausentes (já saíram)
+    public function absents()
+    {
+        $absents = Visit::whereNotNull('exit')->get();
+        return view('visits.index', ['visits' => $absents]);
+    }
+
+    // Alterna o estado de saída da visita (AJAX)
+    public function togglePresence($id)
+    {
+        $visit = Visit::findOrFail($id);
+
+        if ($visit->exit === null) {
+            $visit->exit = now('Europe/Lisbon')->format('Y-m-d H:i:s');
+        } else {
+            $visit->exit = null;
+        }
+
+        $visit->save();
+
+        return response()->json([
+            'success' => true,
+            'is_present' => $visit->exit === null,
+        ]);
     }
 }
