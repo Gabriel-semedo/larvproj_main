@@ -9,20 +9,16 @@ class CompaniesController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');  // Captura o valor da pesquisa
+        $search = $request->input('search');
 
-        // Criar a consulta de empresas
         $companies = Company::query();
 
         if ($search) {
-            // Filtra pela coluna 'name' (nome)
             $companies = $companies->where('name', 'like', '%' . $search . '%');
         }
 
-        // Recupera as empresas filtradas
         $companies = $companies->get();
 
-        // Retorna a view com as empresas filtradas
         return view('companies.index', ['companies' => $companies]);
     }
 
@@ -68,41 +64,8 @@ class CompaniesController extends Controller
     public function show($id)
     {
         $company = Company::findOrFail($id);
-        return view('companies.show', ['companies' => $company]);
+        return view('companies.show', ['company' => $company]);
     }
-    // Mostrar empresas presentes
-    public function marcarPresenca($id)
-    {
-        $company = Company::findOrFail($id);
-        $company->is_present = !$company->is_present;
-        $company->save();
+
     
-        return response()->json([
-            'success' => true,
-            'is_present' => $company->is_present,
-        ]);
-    }
-    
-// Mostrar empresas ausentes
-public function ausentes()
-{
-    $ausentes = Company::where('is_present', false)->get();
-    return response()->json($ausentes);
-}
-
-// Atualizar status de presença (ativa/desativa)
-public function atualizarPresenca($id)
-{
-    $empresa = Company::findOrFail($id);
-    $empresa->is_present = !$empresa->is_present;
-    $empresa->save();
-
-    \Log::info('Presença atualizada para a empresa: ' . $empresa->name);
-
-    return response()->json([
-        'success' => true,
-        'is_present' => $empresa->is_present,
-    ]);
-}
-
 }
